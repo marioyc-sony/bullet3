@@ -15,7 +15,6 @@
 
 #include "btQuickprof.h"
 #include "btThreads.h"
-
 #ifdef __CELLOS_LV2__
 #include <sys/sys_time.h>
 #include <sys/time_util.h>
@@ -84,7 +83,7 @@ struct btClockData
 ///The btClock is a portable basic clock that measures accurate time in seconds, use for profiling.
 btClock::btClock()
 {
-	m_data = new btClockData;
+	m_data = std::make_shared<btClockData>();
 #ifdef BT_USE_WINDOWS_TIMERS
 	QueryPerformanceFrequency(&m_data->mClockFrequency);
 #endif
@@ -93,12 +92,11 @@ btClock::btClock()
 
 btClock::~btClock()
 {
-	delete m_data;
 }
 
 btClock::btClock(const btClock& other)
 {
-	m_data = new btClockData;
+	m_data = std::make_shared<btClockData>();
 	*m_data = *other.m_data;
 }
 
@@ -694,7 +692,6 @@ void CProfileManager::dumpAll()
 	CProfileManager::Release_Iterator(profileIterator);
 }
 
-
 void btEnterProfileZoneDefault(const char* name)
 {
 }
@@ -710,7 +707,6 @@ void btLeaveProfileZoneDefault()
 {
 }
 #endif  //BT_NO_PROFILE
-
 
 // clang-format off
 #if defined(_WIN32) && (defined(__MINGW32__) || defined(__MINGW64__))

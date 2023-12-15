@@ -14,10 +14,12 @@
 #define BT_QUICK_PROF_H
 
 #include "btScalar.h"
+#include <memory>
 #define USE_BT_CLOCK 1
 
 #ifdef USE_BT_CLOCK
 
+struct btClockData;
 ///The btClock is a portable basic clock that measures accurate time in seconds, use for profiling.
 class btClock
 {
@@ -47,7 +49,7 @@ public:
 	btScalar getTimeSeconds();
 
 private:
-	struct btClockData* m_data;
+	std::shared_ptr<struct btClockData> m_data;
 };
 
 #endif  //USE_BT_CLOCK
@@ -72,7 +74,6 @@ const unsigned int BT_QUICKPROF_MAX_THREAD_COUNT = 64;
 unsigned int btQuickprofGetCurrentThreadIndex2();
 
 #ifndef BT_NO_PROFILE
-
 
 #include <stdio.h>  //@todo remove this, backwards compatibility
 
